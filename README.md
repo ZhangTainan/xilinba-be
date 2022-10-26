@@ -14,3 +14,14 @@
 
 - #### [mybatis-plus](https://baomidou.com/)
 
+- #### JWT(Json Web Token)
+
+- #### [Swagger-ui](https://github.com/swagger-api/swagger-ui)
+
+- #### Gson
+
+
+
+### 接口文档
+
+![image-20221026231158616](https://cdn.jsdelivr.net/gh/ZhangTainan/Drawing-bed/imgs/image-20221026231158616.png)
