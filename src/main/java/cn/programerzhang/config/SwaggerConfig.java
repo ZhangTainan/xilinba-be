@@ -19,6 +19,8 @@ public class SwaggerConfig {
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                // 配置分组
+//                .groupName("组名")
                 // 是否启动,默认true,false则不能在浏览器中访问,可以根据环境注入
                 // .enable(false)
                 .select()
