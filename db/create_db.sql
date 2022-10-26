@@ -11,7 +11,7 @@
  Target Server Version : 50635
  File Encoding         : 65001
 
- Date: 25/10/2022 20:44:15
+ Date: 26/10/2022 22:50:52
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,12 @@ CREATE TABLE `administrator`  (
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
   `is_able` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用(伪删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of administrator
+-- ----------------------------
+INSERT INTO `administrator` VALUES (1, 'admin', 'admin', 1);
 
 -- ----------------------------
 -- Table structure for announcement
@@ -39,6 +44,10 @@ CREATE TABLE `announcement`  (
   `time` datetime NOT NULL COMMENT '发布时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of announcement
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for chattings
@@ -60,6 +69,10 @@ CREATE TABLE `chattings`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Records of chattings
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for comment_for_topic
 -- ----------------------------
 DROP TABLE IF EXISTS `comment_for_topic`;
@@ -75,6 +88,10 @@ CREATE TABLE `comment_for_topic`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Records of comment_for_topic
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for emoji
 -- ----------------------------
 DROP TABLE IF EXISTS `emoji`;
@@ -85,20 +102,28 @@ CREATE TABLE `emoji`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Records of emoji
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for friend
 -- ----------------------------
 DROP TABLE IF EXISTS `friend`;
 CREATE TABLE `friend`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `user_id` bigint(20) NOT NULL COMMENT '用户',
-  `fridend_id` bigint(20) NOT NULL COMMENT '好友',
+  `friend_id` bigint(20) NOT NULL COMMENT '好友',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
-  INDEX `fridend_id`(`fridend_id`) USING BTREE,
+  INDEX `fridend_id`(`friend_id`) USING BTREE,
   CONSTRAINT `friend_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `friend_ibfk_2` FOREIGN KEY (`fridend_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `friend_ibfk_2` FOREIGN KEY (`friend_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of friend
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for like_for_comment
@@ -113,6 +138,10 @@ CREATE TABLE `like_for_comment`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Records of like_for_comment
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for like_for_topic
 -- ----------------------------
 DROP TABLE IF EXISTS `like_for_topic`;
@@ -125,6 +154,10 @@ CREATE TABLE `like_for_topic`  (
   CONSTRAINT `like_for_topic_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `like_for_topic_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of like_for_topic
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for reply_for_comment
@@ -143,20 +176,28 @@ CREATE TABLE `reply_for_comment`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Records of reply_for_comment
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for topic
 -- ----------------------------
 DROP TABLE IF EXISTS `topic`;
 CREATE TABLE `topic`  (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
-  `userid` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   `topic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `image_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `emoji_id` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `topic_to_user`(`userid`) USING BTREE,
-  CONSTRAINT `topic_to_user` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `topic_to_user`(`user_id`) USING BTREE,
+  CONSTRAINT `topic_to_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of topic
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user
@@ -176,11 +217,16 @@ CREATE TABLE `user`  (
   `birthday` datetime NOT NULL COMMENT '生日',
   `hobby` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '爱好',
   `introduction` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '简介',
-  `static_diretory` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '该用户的静态资源目录',
-  `is_abled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用(伪删除)',
+  `static_directory` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '该用户的静态资源目录',
+  `is_able` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用(伪删除)',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (1, 'demo', 'demo', '123', '123@qq.com', '2022-10-26 20:39:07', '张太难', 'static/demo/icon', 18, 1, '2022-10-26 20:38:39', '抽烟', '测试', 'static/demo', 1);
 
 -- ----------------------------
 -- Table structure for validation_message
@@ -199,5 +245,9 @@ CREATE TABLE `validation_message`  (
   CONSTRAINT `validation_message_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `validation_message_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of validation_message
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;
