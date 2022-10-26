@@ -1,23 +1,22 @@
 package cn.programerzhang.pojo;
 
-import javafx.scene.chart.PieChart;
 import lombok.Data;
 
 @Data
 public class User {
     private Long id;
-    private  String username;
+    private String username;
     private String password;
     private String phone;
     private String email;
-    private PieChart.Data createdTime;
-    private String nickName;
+    private String created_time;
+    private String nick_name;
     private String icon;
     private int age;
-    private int gender;
-    private PieChart.Data birthday;
+    private Boolean gender;
+    private String birthday;
     private String hobby;
     private String introduction;
-    private String staticDiretory;
-    private int isAbled;
+    private String static_directory;
+    private Boolean isAble;
 }
