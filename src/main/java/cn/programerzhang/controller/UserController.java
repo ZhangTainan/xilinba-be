@@ -2,11 +2,11 @@ package cn.programerzhang.controller;
 
 import cn.programerzhang.mapper.UserMapper;
 import cn.programerzhang.pojo.User;
-import com.google.gson.Gson;
+import cn.programerzhang.utils.JsonUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,11 +15,20 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserMapper userMapper;
-    private static final Gson gson = new Gson();
 
     @GetMapping("users")
     public String getUsers() {
         List<User> users = userMapper.selectList(null);
-        return gson.toJson(users);
+        return JsonUtil.toJson(users);
+    }
+    // 判断用户名是否存在
+    @GetMapping("/checkUsernameIfExists")
+    public Boolean checkUsername(@RequestParam("username") String username){
+        // System.out.println(username);
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("username",username);
+
+        // 存在为true
+        return userMapper.selectOne(userQueryWrapper) != null;
     }
 }
